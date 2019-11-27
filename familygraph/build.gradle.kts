@@ -13,7 +13,8 @@ dependencies {
     compile( "org.apache.commons:commons-lang3:3.3.2")
     compile("org.jgrapht:jgrapht-core:1.0.1")
     compile("com.opencsv:opencsv:5.0")
-	compile("org.slf4j:slf4j-api:1.7.2")
+	compile("org.slf4j:slf4j-simple:1.7.5")
+	
     
     testCompile("junit:junit:4.+")
 }
