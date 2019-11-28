@@ -2,8 +2,10 @@ package com.wundermancommerce.interviewtests.graph;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,24 +34,27 @@ public class FamilyTree {
 	private List<Person> loadPeopleData(String path) {
 		path = path.replace("%20", " ");
 
+		List<Person> list=null;
 		try {
-			person = new CsvToBeanBuilder<Person>(new FileReader(path)).withType(Person.class)
+			list = new CsvToBeanBuilder<Person>(new FileReader(path)).withType(Person.class)
 					.withVerifier(new BeanVerifierImpl<Person>()).build().parse();
 		} catch (IllegalStateException | FileNotFoundException e) {
 			LOGGER.error(e.getMessage());
 		}
+		person =  list.stream().distinct().collect(Collectors.toList()); //In case CSV file has duplicate lines.
 		return person;
 	}
 
 	private List<Relationship> loadRelationshipData(String path) {
 		path = path.replace("%20", " ");
-
+		List<Relationship> list=null;
 		try {
-			relationships = new CsvToBeanBuilder<Relationship>(new FileReader(path)).withType(Relationship.class)
+			list = new CsvToBeanBuilder<Relationship>(new FileReader(path)).withType(Relationship.class)
 					.withVerifier(new BeanVerifierImpl<Relationship>()).build().parse();
 		} catch (IllegalStateException | FileNotFoundException e) {
 			LOGGER.error(e.getMessage());
 		}
+		relationships =  list.stream().distinct().collect(Collectors.toList()); //In case CSV file has duplicate lines.
 		return relationships;
 	}
 
@@ -63,11 +68,15 @@ public class FamilyTree {
 	}
 
 	public Set<Person> analysePersonInFamily(Person person) {
+		if(person==null)
+			return new HashSet<Person>(); //Person is null, return empty set
 		this.service.resetCurrentPersonFamily();
 		return this.service.analysePersonInFamily(person);
 	}
 
 	public Set<Person> getLinkedPeople(Person person) {
+		if(person==null)
+			return new HashSet<Person>(); //Person is null, return empty set
 		Set<Person> linkedPeople = service.getLinkedPeople(person);
 		linkedPeople.remove(person); // In normal scenarios, this set also contains this person, but we need only his
 										// linked people. So we remove him. If a person has zero linked people, the set

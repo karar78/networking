@@ -47,4 +47,16 @@ public class Relationship {
 				+ "]";
 	}
 
+	public void setFirstEmail(String firstEmail) {
+		this.firstEmail = firstEmail;
+	}
+
+	public void setRelation(String relation) {
+		this.relation = relation;
+	}
+
+	public void setSecondEmail(String secondEmail) {
+		this.secondEmail = secondEmail;
+	}
+
 }

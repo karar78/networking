@@ -31,6 +31,7 @@ public class NetworkingGraphService extends Networking {
 	public void createWholeFamily() {
 		for (Person person : this.getPeople()) {
 			try {
+				trimPersonFields(person);
 				this.families.addVertex(person);
 				mappedPeople.put(person.getEmail(), person);
 			} catch (Exception e) {
@@ -42,6 +43,7 @@ public class NetworkingGraphService extends Networking {
 			// Map and create their edge with a weighted value of 10 if it is family or 5 if
 			// it is friend
 			try {
+				trimRelationshipFields(relationship);
 				this.families.setEdgeWeight(
 						this.families.addEdge(mappedPeople.get(relationship.getFirstEmail()),
 								mappedPeople.get(relationship.getSecondEmail())),
@@ -51,6 +53,16 @@ public class NetworkingGraphService extends Networking {
 			}
 		}
 
+	}
+	private void trimPersonFields(Person person) {
+		person.setEmail(person.getEmail().trim());
+		person.setName(person.getName().trim());
+	}
+	
+	private void trimRelationshipFields(Relationship relationship) {
+		relationship.setFirstEmail(relationship.getFirstEmail().trim());
+		relationship.setSecondEmail(relationship.getSecondEmail().trim());
+		relationship.setRelation(relationship.getRelation().trim());
 	}
 
 	private Set<Person> membersList = new HashSet<Person>();
@@ -101,6 +113,7 @@ public class NetworkingGraphService extends Networking {
 	public void resetCurrentPersonFamily() { // This is important to reset family connection in order to analyse another
 												// person's family
 		extendedFamily.clear();
+		membersList.clear();
 	}
 
 	public WeightedGraph<Person, DefaultWeightedEdge> getFamilies() {
