@@ -14,7 +14,6 @@ dependencies {
     compile("org.jgrapht:jgrapht-core:1.0.1")
     compile("com.opencsv:opencsv:5.0")
 	compile("org.slf4j:slf4j-simple:1.7.5")
-	
     
     testCompile("junit:junit:4.+")
 }
